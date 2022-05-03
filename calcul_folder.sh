@@ -2,17 +2,15 @@ declare -i octet
 arr=()
 sorted_arr=()
 user_arr=()
-#TODO: Changer la valeur de la variable 'name'
-name="Tanguy"
-for h in "users"/*; do
+for h in "/home"/*; do
+	octet=0	
 	for f in "$h"/*
-		do 
-			octet=0		
+	do 	
 			[ -f "$f" ] && octet+=$(stat -c%s "$f")
-			arr+=($octet)
-			sorted_arr+=($octet)
-			user_arr+=($h)
 	done
+	arr+=($octet)
+	sorted_arr+=($octet)
+	user_arr+=($h)
 done
   
 # Performing Bubble sort 
@@ -48,18 +46,16 @@ for (( i = 0; i < ${#user_arr[@]}; i++ )); do
 
 done
 
-#TODO: Limiter l'affichage des consomateurs à 5
-
-for f in "users/$name"/*
+for f in "$user_arr"/*
 do 
 	octet=0	
 	[ -f "$f" ] && octet+=$(stat -c%s "$f")
 	((Ko=$octet/1000))
 	((Mo=$octet/1000000))
 	((Go=$octet/1000000000))
-	echo "echo '$Go go, $Mo mo, $Ko ko et $octet octets'" > users/$name/.bashrc
+	echo "echo '$Go go, $Mo mo, $Ko ko et $octet octets'" > $user_arr/.bashrc
 	if [ $Mo -gt 100 ]
 	then
-		echo "echo 'Attention, votre répertoire personnel occupe plus de 100Mo'" >> users/$name/.bashrc
+		echo "echo 'Attention, votre répertoire personnel occupe plus de 100Mo'" >> $user_arr/.bashrc
 	fi
 done
